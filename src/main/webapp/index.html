@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            $.getJSON("/Hello?size=30", function (dataArray) {
+                var items = [];
+                $.each(dataArray, function (index) {
+                    items.push([
+                        new Date(this[0] * 1000), 
+                        parseFloat(this[3]), 
+                        parseFloat(this[1]), 
+                        parseFloat(this[4]), 
+                        parseFloat(this[2])
+                    ]);
+                });
+
+                var options = {
+                    legend: 'none'
+                };
+                var dataGoogleChart = google.visualization.arrayToDataTable(items, true);
+
+                var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+
+                chart.draw(dataGoogleChart, options);
+            });
+
+
+
+        }
+    </script>
+</head>
+
+<body>
+    <h1>XETHZEUR 4H OHLC</h1>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+
+</html>
