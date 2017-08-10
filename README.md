@@ -2,4 +2,4 @@ mvn clean package
 
 mvn wildfly-swarm:run
 
-http://localhost:8080/
+http://localhost:8181/

@@ -44,11 +44,12 @@
 				<groupId>org.wildfly.swarm</groupId>
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly.swarm}</version>
-                <configuration>
-                    <properties>
-                        <swarm.http.port>8181</swarm.http.port>
-                    </properties>
-                </configuration>
+				<configuration>
+					<properties>
+              			<mainClass>com.example.auth.Main</mainClass>
+						<swarm.http.port>8181</swarm.http.port>
+					</properties>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -80,6 +81,13 @@
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>undertow</artifactId>
+		</dependency>
+
+		<!-- pour le cache des données de marché -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.10.4</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
