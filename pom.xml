@@ -45,8 +45,9 @@
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly.swarm}</version>
 				<configuration>
+					<debug>8000</debug>
 					<properties>
-              			<mainClass>com.example.auth.Main</mainClass>
+						<mainClass>com.example.auth.Main</mainClass>
 						<swarm.http.port>8181</swarm.http.port>
 					</properties>
 				</configuration>
@@ -97,6 +98,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 </project>

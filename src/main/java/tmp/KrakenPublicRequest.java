@@ -15,7 +15,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.net.ssl.HttpsURLConnection;
 
-/*
+/*	
 TODO...
  */
 
@@ -29,6 +29,9 @@ public class KrakenPublicRequest {
 		try {
 			url = new URL(address);
 			con = (HttpsURLConnection) url.openConnection();
+			
+			con.setConnectTimeout(10_000);//10 secondess
+			
 			con.setRequestProperty("ContentType", "application/x-www-form-urlencoded");
 			con.setRequestMethod("POST");
 		} catch (MalformedURLException e) {
@@ -56,8 +59,8 @@ public class KrakenPublicRequest {
 				response.append(inputLine);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 
 		String result = response.toString();
