@@ -30,7 +30,7 @@ public class KrakenPublicRequest {
 			url = new URL(address);
 			con = (HttpsURLConnection) url.openConnection();
 			
-			con.setConnectTimeout(10_000);//10 secondess
+			con.setConnectTimeout(30_000);//10 secondess
 			
 			con.setRequestProperty("ContentType", "application/x-www-form-urlencoded");
 			con.setRequestMethod("POST");

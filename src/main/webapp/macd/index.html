@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>MACD XETHZEUR</title>
+<script>document.write('<base href="' + document.location + '" />');</script>
+<!-- bootstrap -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- d3 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" />
+<!-- angular -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<!-- d3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"
+	charset="utf-8"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<script
+	src="https://rawgit.com/krispo/angular-nvd3/v1.0.4/dist/angular-nvd3.js"></script>
+<script src="ohlcService.js"></script>
+<script src="macdService.js"></script>
+<script src="controller.js"></script>
+
+</head>
+
+<body ng-app="macdModule"
+	ng-controller="MacdController as macdController">
+
+	<section id="formulaire">
+		<div class="container">
+			<div class="row">
+				<h1>{{macdController.echelle}}</h1>
+				<form>
+					<label for="echelleSelect">Echelle de temps</label> <select
+						ng-model="macdController.echelle"
+						ng-options="key as value for (key , value) in macdController.echelles"
+						ng-change="macdController.refresh()"
+						class="form-control" id="echelleSelect"></select>
+
+				</form>
+			</div>
+
+		</div>
+	</section>
+	<section id="ohlc">
+		<div class="container">
+			<div class="row">
+				<h1>OHLC XETHZEUR</h1>
+				Open High Low Close
+				<!-- 
+				<nvd3 options="macdController.ohlcOptions"
+					data="macdController.ohlcData"
+					class="with-3d-shadow with-transitions"></nvd3>
+					 -->
+				<nvd3 options="ohlcOptions" data="ohlcData" api="api"
+					class="with-3d-shadow with-transitions"></nvd3>
+			</div>
+		</div>
+	</section>
+	<section id="macd">
+		<div class="container">
+			<div class="row">
+				<h1>MACD(12,26,9) XETHZEUR</h1>
+				A bullish crossover occurs when the MACD turns up and crosses above the signal line. A bearish crossover occurs when the MACD turns down and crosses below the signal line.
+				<nvd3 options="macdOptions" data="macdData"
+					class="with-3d-shadow with-transitions"></nvd3>
+			</div>
+		</div>
+	</section>
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js""></script>
+	<!-- bootstrap -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

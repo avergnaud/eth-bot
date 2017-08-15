@@ -74,8 +74,12 @@ public class OHLCServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 
+
+		String grainString = req.getParameter("grain");
+//		Integer grain = Integer.parseInt(grainString);
+		
 		// TODO : cache + cron
-		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=XETHZEUR&interval=1440");// TODO
+		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=XETHZEUR&interval=" + grainString);// TODO
 																												// :
 																												// param
 
