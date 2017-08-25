@@ -1,20 +1,9 @@
 package com.poc.servlet;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -30,62 +19,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tmp.KrakenPublicRequest;
+import com.poc.macd.MACDBuilder;
+import com.poc.ohlc.OHLC;
+import com.poc.ohlc.OHLCCache;
+import com.poc.ohlc.OHLCCacheManager;
 
 @WebServlet("/OHLC")
 public class OHLCServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
-	public static void main(String[] args) {
-
-		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=XETHZEUR&interval=1440");// TODO
-																												// :
-																												// param
-
-		DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
-		NumberFormat nf = DecimalFormat.getInstance(Locale.FRANCE);
-
-		JsonArray arr = jsonObject.getJsonObject("result").getJsonArray("XETHZEUR");// TODO
-																					// :
-																					// param
-		try(PrintWriter pw = new PrintWriter("out.csv")) {
-			
-			for (JsonArray jv : arr.getValuesAs(JsonArray.class)) {
-				
-				long ts = jv.getJsonNumber(0).longValue() *1000;
-				LocalDate date = Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault()).toLocalDate();
-				String formattedDate = dtf.format(date);
-				
-				Number n = nf.parse(jv.getString(4));
-//				double d = n.doubleValue();
-				
-				pw.println(formattedDate + "," + n);
-			}
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
-	}
+	
+	{OHLCCacheManager.INSTANCE.start();}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 
-
 		String grainString = req.getParameter("grain");
-//		Integer grain = Integer.parseInt(grainString);
+
+		//cache
+		new MACDBuilder().setCurrencyPair("XETHZEUR")
+				.setDureeUnitaire(Integer.parseInt(grainString))
+				.setIntervalleMoyenneRapide(12)
+				.setIntervalleMoyenneLente(26)
+				.setIntervalleSignal(9)
+				.build();
 		
-		// TODO : cache + cron
-		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=XETHZEUR&interval=" + grainString);// TODO
-																												// :
-																												// param
+		// TODO ?
+		OHLC ohlc = new OHLC("XETHZEUR", Integer.parseInt(grainString));//TODO
+		JsonObject jsonObject = OHLCCache.INSTANCE.get(ohlc);
+//		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=XETHZEUR&interval=" + grainString);// TODO
 
 		JsonArray arr = jsonObject.getJsonObject("result").getJsonArray("XETHZEUR");// TODO
-																					// :
-																					// param
 		int taille = arr.size();
 		List<JsonValue> liste = arr.subList(taille - 50, taille);// TODO : param
 

@@ -1,4 +1,4 @@
-package com.poc.servlet.macd;
+package com.poc.servlet;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -9,7 +9,6 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;

@@ -41,8 +41,5 @@
 
     <!-- OHLC -->
     <cache name="com.poc.ohlc.cache" eternal="true" overflowToDisk="true" maxBytesLocalHeap="10M" />
-    
-    <!-- MACD -->
-    <cache name="com.poc.macd.cache" eternal="true" overflowToDisk="true" maxBytesLocalHeap="10M" />
 
 </ehcache>

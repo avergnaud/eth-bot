@@ -70,7 +70,7 @@ public class KrakenPublicRequest {
 			jsonObject = reader.readObject(); 
 			
 		}
-		
+		/* TODO check que c'est null lorsque timeout Kraken */
 		return jsonObject;
 	}
 }

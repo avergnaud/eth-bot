@@ -8,8 +8,10 @@ import java.util.List;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import tmp.KrakenPublicRequest;
+import com.poc.ohlc.OHLC;
+import com.poc.ohlc.OHLCCache;
 
+/* TODO immutable ? */
 public class MACD {
 
 	/* la définition du MACD */
@@ -25,7 +27,8 @@ public class MACD {
 	
 	/* son state */
 	private List<TradingPeriod> listPeriods;
-	private boolean estBullish;
+	private boolean bullish;
+	private double acceleration;
 	
 	/* package private, utiliser le builder */
 	MACD(String currencyPair, int dureeUnitaire, int intervalleMoyenneRapide, int intervalleMoyenneLente,
@@ -55,7 +58,9 @@ public class MACD {
 		
 		List<TradingPeriod> temporaire = new ArrayList<>();
 
-		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=" + currencyPair + "&interval=" + dureeUnitaire);/* XETHZEUR 1440*/
+		OHLC ohlc = new OHLC(currencyPair, dureeUnitaire);
+		JsonObject jsonObject = OHLCCache.INSTANCE.get(ohlc);
+//		JsonObject jsonObject = new KrakenPublicRequest().queryPublic("OHLC", "pair=" + currencyPair + "&interval=" + dureeUnitaire);/* XETHZEUR 1440*/
 		
 		if(jsonObject == null) {
 			/* pb requête Kraken */
@@ -83,7 +88,10 @@ public class MACD {
 		listPeriods = temporaire;
 		
 		TradingPeriod courante = listPeriods.get(listPeriods.size() - 1);
-		estBullish = courante.getMacd().compareTo(courante.getSignal()) > 0;
+		bullish = courante.getMacd().compareTo(courante.getSignal()) > 0;
+		
+		TradingPeriod precedente = listPeriods.get(listPeriods.size() - 2);
+		acceleration = courante.getMacd().subtract(precedente.getMacd()).doubleValue();
 	}
 
 	private void alimenteMoyennesRapides(List<TradingPeriod> listPeriods) {
@@ -174,8 +182,11 @@ public class MACD {
 		return somme.divide(BigDecimal.valueOf(listPeriods.size()), 10, RoundingMode.HALF_EVEN);
 	}
 
-	public boolean isEstBullish() {
-		return estBullish;
+	public boolean isBullish() {
+		return bullish;
+	}
+	public double getAcceleration() {
+		return acceleration;
 	}
 
 	@Override

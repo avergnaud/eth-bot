@@ -1,7 +1,5 @@
 package com.poc.macd;
 
-import com.poc.data.MACDCache;
-
 /**
  * builder pattern pour MACD
  */
@@ -45,12 +43,12 @@ public class MACDBuilder {
 
 	public MACD build() {
 		MACD candidat = new MACD(currencyPair, dureeUnitaire, intervalleMoyenneRapide, intervalleMoyenneLente, intervalleSignal);
-		if( MACDCache.INSTANCE.get(candidat) != null) {
-			return MACDCache.INSTANCE.get(candidat);
-		} else {
-			MACDCache.INSTANCE.insertOrUpdate(candidat);
-			return candidat;
-		}
+//		if( MACDCache.INSTANCE.get(candidat) != null) {
+//			return MACDCache.INSTANCE.get(candidat);
+//		} else {
+//			MACDCache.INSTANCE.insertOrUpdate(candidat);
+//		}
+		return candidat;
 	}
 	
 }
