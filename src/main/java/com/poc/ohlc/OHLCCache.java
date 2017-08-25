@@ -1,12 +1,10 @@
 package com.poc.ohlc;
 
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.json.JsonObject;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 import tmp.KrakenPublicRequest;
 
 public enum OHLCCache {
@@ -14,28 +12,36 @@ public enum OHLCCache {
 	INSTANCE;
 	
 	/* ehcache */
-	private Cache cache;
+	private ConcurrentHashMap<OHLC, JsonObject> cache;
 	
 	private OHLCCache() {
-		cache = CacheManager.getInstance().getCache("com.poc.ohlc.cache");
+		cache = new ConcurrentHashMap<>();
 	}
 	
 	public void insertOrUpdate(OHLC key, JsonObject krakenResponse) {
-		cache.put(new Element(key, krakenResponse));
+		if(key != null && krakenResponse != null) {
+			// {"error":["EAPI:Rate limit exceeded"]}
+			if(krakenResponse.getJsonArray("error").size() != 0) {
+				System.out.println("[OHLCCache.insertOrUpdate] error " + krakenResponse.toString());
+				return;
+			}
+			cache.put(key, krakenResponse);
+		}
 	}
 	
 	public JsonObject get(OHLC key) {
-		Element elt = cache.get(key);
+		JsonObject elt = cache.get(key);
 		if(elt == null) {
 			JsonObject tmp = new KrakenPublicRequest().queryPublic("OHLC", "pair="+ key.getPair() +"&interval=" + key.getGrain());
+			cache.put(key, tmp);
 			OHLCCacheManager.INSTANCE.start();
 			return tmp;
 		}
-		return (JsonObject) elt.getObjectValue();
+		return elt;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OHLC> getAll() {
-		return (List<OHLC>)cache.getKeys();
+	public Set<OHLC> getAll() {
+		return cache.keySet();
 	}
 }
