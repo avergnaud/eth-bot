@@ -2,11 +2,11 @@ mvn clean package
 
 mvn wildfly-swarm:run
 
-http://localhost:8181/OHLC?grain=5
+http://brochain.hd.free.fr:8181/OHLC?grain=5
 
-http://localhost:8181/AlerteMACD?grain=30
+http://brochain.hd.free.fr:8181/AlerteMACD?grain=5
 
-http://localhost:8181/macd/
+http://brochain.hd.free.fr:8181/macd/?grain=5
 
 mvn wildfly-swarm:stop
 
