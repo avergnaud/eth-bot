@@ -65,7 +65,7 @@ public class KrakenPublicRequest {
 
 		String result = response.toString();
 
-		System.out.println("[Cache] KrakenPublicRequest " + address);
+		System.out.println("[Cache] KrakenPublicRequest " + address + " - " + props);
 
 		JsonObject jsonObject = null;
 		try(JsonReader reader = Json.createReader(new StringReader(result));) {

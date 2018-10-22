@@ -51,13 +51,13 @@ public class OHLC {
 	
 	/** */
 	public JsonObject refresh() {
-		System.out.println("[cache] OHLC.refresh");
+		System.out.println("[cache] OHLC.refresh - " + pair + " " + grain);
 		JsonObject dataFromKraken = new KrakenPublicRequest().queryPublic("OHLC", "pair="+ pair +"&interval=" + grain);
 		if(dataFromKraken != null) {
 			/* cas timeout Kraken */
 			this.dataFromKraken = dataFromKraken;
 		} else {
-			System.out.println("[cache] OHLC.refresh ! dataFromKraken null");
+			System.out.println("[cache] OHLC.refresh ! dataFromKraken null - " + pair + " " + grain);
 		}
 		return this.dataFromKraken;
 	}
