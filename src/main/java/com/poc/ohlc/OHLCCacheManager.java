@@ -37,7 +37,7 @@ public enum OHLCCacheManager {
 			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
-			service.scheduleAtFixedRate(command, i++, 2, TimeUnit.MINUTES);
+			service.scheduleAtFixedRate(command, i, 3, TimeUnit.MINUTES);
 		}
 		started = true;
 	}
