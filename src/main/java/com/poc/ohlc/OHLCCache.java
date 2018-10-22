@@ -19,6 +19,7 @@ public enum OHLCCache {
 	}
 	
 	public void insertOrUpdate(OHLC key, JsonObject krakenResponse) {
+		System.out.println("[cache] OHLCCache.insertOrUpdate");
 		if(key != null && krakenResponse != null) {
 			// {"error":["EAPI:Rate limit exceeded"]}
 			if(krakenResponse.getJsonArray("error").size() != 0) {

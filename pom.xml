@@ -51,7 +51,7 @@
 				<version>${version.wildfly.swarm}</version>
 				<configuration>
           			<!-- <mainClass>com.poc.main.App</mainClass> -->
-					<!-- <debug>8000</debug> -->
+					<debug>8000</debug>
 					<properties>
 						<swarm.http.port>8182</swarm.http.port>
 					</properties>

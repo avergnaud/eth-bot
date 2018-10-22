@@ -30,9 +30,14 @@ public enum OHLCCacheManager {
 //		int i = 0;
 		for(int i=0; i< ohlcs.length; i++) {
 			OHLC ohlc = ohlcs[i];
-			Runnable command = () -> OHLCCache.INSTANCE.insertOrUpdate(ohlc, ohlc.refresh());;
+			Runnable command = () -> OHLCCache.INSTANCE.insertOrUpdate(ohlc, ohlc.refresh());
 			ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-			service.scheduleAtFixedRate(command, i++, 10, TimeUnit.MINUTES);
+			try {
+				Thread.sleep(10_000);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			service.scheduleAtFixedRate(command, i++, 2, TimeUnit.MINUTES);
 		}
 		started = true;
 	}
