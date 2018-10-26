@@ -44,6 +44,9 @@ angular.module('ohlcServiceModule', [])
 
 			var refresh = function(echelle) {
 				var url = "/OHLC?grain=" + echelle;
+			    if(window.location == "/market/macd/") {
+			        url = "/market/OHLC?grain=" + echelle;/* bad */
+			    }
 				return $http.get(url);;
 			};
 

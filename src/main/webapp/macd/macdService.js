@@ -57,6 +57,9 @@ angular.module('macdServiceModule', [])
 
 		var refresh = function(echelle) {
 			var url = "/MACD?grain=" + echelle;
+			    if(window.location == "/market/macd/") {
+			        url = "/market/MACD?grain=" + echelle;/* bad */
+			    }
 			return $http.get(url);;
 		};
 
