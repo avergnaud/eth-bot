@@ -51,7 +51,7 @@ public class OHLC {
 	
 	/** */
 	public JsonObject refresh() {
-		System.out.println("[cache] OHLC.refresh - " + pair + " " + grain);
+		//System.out.println("[cache] OHLC.refresh - " + pair + " " + grain);
 		JsonObject dataFromKraken = new KrakenPublicRequest().queryPublic("OHLC", "pair="+ pair +"&interval=" + grain);
 		if(dataFromKraken != null) {
 			/* cas timeout Kraken */
